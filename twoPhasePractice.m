@@ -1,0 +1,18 @@
+clc;
+variables = {'x1','x2','x3','s1','s2','a1','a2','sol'};
+Ovariables = {'x1','x2','x3','s1','s2'};
+Ocost = [-7.5 3 0 0 0 -1 -1 0];
+info = [3 -1 -1 -1 0 1 0 3; 1 -1 1 0 -1 0 1 2];
+BV = [6 7];
+cost = [0 0 0 0 0 -1 -1 0];
+A = info;
+startBV = find(cost<0);
+zjcj = cost(BV)*A - cost;
+table = array2table([zjcj;A]);
+table.Properties.VariableNames(1:size(A,2)) = variables;
+fprintf('**********************\n     Phase 1 starts\n**********************\n');
+[BFS,A] = funcOfSimp(A,BV,cost,variables);
+fprintf('**********************\n     Phase 2 starts\n**********************\n');
+A(:,startBV) = [];
+Ocost(:,startBV) = [];
+[optBFS, optA] = funcOfSimp(A,BFS,Ocost,Ovariables);
